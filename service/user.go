@@ -9,9 +9,9 @@ import (
 )
 
 type RegisterRequest struct {
-	Name     string `from:"name",binding:"required"`
-	Password string `from:"password",binding:"required"`
-	Salt     string `from:"salt"`
+	Name     string `form:"name" binding:"required"`
+	Password string `form:"password" binding:"required"`
+	Salt     string `form:"salt"`
 }
 
 type RegisterReply struct {
@@ -19,8 +19,8 @@ type RegisterReply struct {
 }
 
 type LoginRequest struct {
-	Username int64  `from:"username",binding:"required"`
-	Password string `from:"password",binding:"required"`
+	Username int64  `form:"username" binding:"required"`
+	Password string `form:"password" binding:"required"`
 }
 
 type LoginReponse struct {
@@ -29,7 +29,7 @@ type LoginReponse struct {
 }
 
 type LogoutRequest struct {
-	Token string `from:"token",binding:"required"`
+	Token string `form:"token" binding:"required"`
 }
 
 func Register(request *RegisterRequest) (*RegisterReply, error) {
@@ -63,13 +63,12 @@ func ExistUser(request *LoginRequest) (*LoginReponse, error) {
 		return nil, err
 	}
 	passwd := encrypt.EncryptPassword(request.Password, user.Salt.String)
-	if !user.Password.Valid || passwd != user.Password.String{
-		return reply,nil
+	if !user.Password.Valid || passwd != user.Password.String {
+		return reply, nil
 	}
 	reply.Success = true
 	token := encrypt.Token(username, passwd)
 	reply.Token = token
-	object.CacheUser(token,user)
+	object.CacheUser(token, user)
 	return reply, nil
 }
-

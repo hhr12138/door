@@ -8,8 +8,8 @@ import (
 )
 
 func TestRegister(t *testing.T) {
-	db,_ := sqlx.Open("mysql",object.TEST_DB_ADDR)
+	db, _ := sqlx.Open("mysql", object.TEST_DB_ADDR)
 	engine := gin.Default()
-	Register(db,engine)
-	engine.Run()
+	Register(db, engine)
+	engine.Run("127.0.0.1:8080")
 }

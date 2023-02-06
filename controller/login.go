@@ -7,28 +7,27 @@ import (
 	"net/http"
 )
 
-func Login(ctx *gin.Context){
+func Login(ctx *gin.Context) {
 	request := new(service.LoginRequest)
 	err := ctx.ShouldBind(request)
-	if err != nil{
-		ctx.JSON(http.StatusBadGateway,err)
+	if err != nil {
+		ctx.JSON(http.StatusBadGateway, err.Error())
 		return
 	}
 	reply, err := service.ExistUser(request)
-	if err != nil{
-		ctx.JSON(http.StatusInternalServerError,err)
-	} else{
-		ctx.JSON(http.StatusOK,reply)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, err.Error())
+	} else {
+		ctx.JSON(http.StatusOK, reply)
 	}
 }
 
 func Logout(ctx *gin.Context) {
 	request := new(service.LogoutRequest)
 	err := ctx.ShouldBind(request)
-	if err != nil{
-		ctx.JSON(http.StatusBadGateway,err)
+	if err != nil {
+		ctx.JSON(http.StatusBadGateway, err.Error())
 	}
 	object.RemoveUser(request.Token)
-	ctx.JSON(http.StatusOK,"Success")
+	ctx.JSON(http.StatusOK, "Success")
 }
-
